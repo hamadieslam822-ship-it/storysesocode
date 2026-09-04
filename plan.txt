@@ -1,0 +1,16 @@
+my-stories-app/
+├── .env.local                  <-- ملف المفاتيح السرية لـ Supabase
+├── lib/
+│   └── supabaseClient.js       <-- ملف اتصال التطبيق بـ Supabase
+├── app/
+│   ├── layout.jsx              <-- الهيكل العام لكل الصفحات (Header, Container)
+│   ├── page.jsx                <-- الصفحة الرئيسية (عرض القصص + زر التسجيل)
+│   ├── auth/
+│   │   └── callback/
+│   │       └── route.js        <-- المعالج الخاص بإنهاء تسجيل الدخول عبر Google
+│   └── story/
+│       └── [id]/
+│           └── page.jsx        <-- صفحة عرض قصة معينة بحسب id
+└── components/
+    ├── Navbar.jsx              <-- شريط الملاحة الأعلى (الشعار + زر الدخول)
+    └── StoryCard.jsx           <-- كارت القصة المخصص للعرض

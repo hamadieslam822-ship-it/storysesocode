@@ -1,0 +1,13 @@
+import Link from 'next/link';
+
+export default function StoryCard({ story }) {
+  return (
+    <div style={{ border: '1px solid #ddd', padding: '16px', borderRadius: '8px', marginBottom: '16px', background: '#fff' }}>
+      <h3 style={{ margin: '0 0 8px 0' }}>{story.title}</h3>
+      <p style={{ color: '#666', fontSize: '14px' }}>{story.summary}</p>
+      <Link href={`/story/${story.id}`} style={{ color: '#3182ce', textDecoration: 'none', fontWeight: 'bold' }}>
+        اقرأ القصة كاملة ←
+      </Link>
+    </div>
+  );
+}

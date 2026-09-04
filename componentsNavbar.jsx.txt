@@ -1,0 +1,54 @@
+'use client';
+import { useState, useEffect } from 'react';
+import { supabase } from '@/lib/supabaseClient';
+
+export default function Navbar() {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    // التحقق من حالة المستخدم الحالية
+    supabase.auth.getUser().then(({ data: { user } }) => {
+      setUser(user);
+    });
+
+    // الاستماع لتغيرات حالة التسجيل
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const handleGoogleLogin = async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}/auth/callback`,
+      },
+    });
+  };
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+  };
+
+  return (
+    <nav style={{ display: 'flex', justifyContent: 'space-between', padding: '1rem 2rem', background: '#1a1a1a', color: '#fff', alignItems: 'center' }}>
+      <h2>موقع القصص</h2>
+      <div>
+        {user ? (
+          <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+            <span>مرحباً، {user.user_metadata?.full_name || user.email}</span>
+            <button onClick={handleLogout} style={{ padding: '8px 12px', cursor: 'pointer', borderRadius: '4px', border: 'none', background: '#e53e3e', color: '#fff' }}>
+              تسجيل خروج
+            </button>
+          </div>
+        ) : (
+          <button onClick={handleGoogleLogin} style={{ padding: '8px 16px', cursor: 'pointer', borderRadius: '4px', border: 'none', background: '#4285F4', color: '#fff', fontWeight: 'bold' }}>
+            تسجيل الدخول بـ Google
+          </button>
+        )}
+      </div>
+    </nav>
+  );
+}
